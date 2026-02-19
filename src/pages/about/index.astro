@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../pages/Layout.astro';
+import About from '../../components/about.astro';
+
+const allProjects = await getCollection('projects');
+---
+<Layout title="Portafolio">
+  <About /> </Layout>
+<Layout title="Mi Portafolio">
+  <section class="py-12">
+    <h1 class="text-4xl font-bold mb-4 dark:text-white">Proyectos Seleccionados</h1>
+    <p class="text-gray-600 dark:text-gray-400 mb-12 max-w-2xl">
+      Una muestra de las soluciones técnicas y experimentos visuales que he desarrollado recientemente.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {allProjects.map(project => (
+        <div class="group relative bg-gray-50 dark:bg-gray-800 rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-700">
+          <div class="aspect-video overflow-hidden">
+            <img 
+              src={project.data.image} 
+              alt={project.data.title}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+
+          <div class="p-6">
+            <h3 class="text-2xl font-bold mb-2 dark:text-white">{project.data.title}</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+              {project.data.description}
+            </p>
+            
+            <div class="flex flex-wrap gap-2 mb-6">
+              {project.data.technologies.map(tech => (
+                <span class="px-3 py-1 bg-white dark:bg-gray-700 text-xs font-medium rounded-full shadow-sm dark:text-gray-200">
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            <div class="flex gap-4">
+              {project.data.link && (
+                <a href={project.data.link} class="text-sm font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1">
+                  Demo Live <span>↗</span>
+                </a>
+              )}
+              {project.data.github && (
+                <a href={project.data.github} class="text-sm font-bold text-gray-500 dark:text-gray-300 flex items-center gap-1">
+                  Código <span>GitHub</span>
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>

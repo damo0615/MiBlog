@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../pages/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+
+const allPosts = await getCollection('blog');
+const categories = [...new Set(allPosts.map((post) => post.data.category))];
+---
+
+<Layout title="Mi Blog">
+  <section class="mb-12">
+    <h1 class="text-4xl font-extrabold mb-4 dark:text-white">Explora mi contenido</h1>
+    
+    <div class="flex flex-wrap gap-3 mb-10">
+      {categories.map(category => (
+        <a 
+          href={`/category/${category.toLowerCase()}`} 
+          class="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-full text-sm font-medium hover:bg-blue-600 hover:text-white transition-colors"
+        >
+          {category}
+        </a>
+      ))}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {allPosts.map(post => (
+        <PostCard post={post} />
+      ))}
+    </div>
+  </section>
+</Layout>

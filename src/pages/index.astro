@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../pages/Layout.astro';
+import PostCard from '../components/PostCard.astro';
+
+// 1. Obtenemos todos los posts y los ordenamos por fecha (más recientes primero)
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// 2. Extraemos las categorías únicas para el menú de filtros
+const categories = [...new Set(allPosts.map((post) => post.data.category))];
+
+// 3. (Opcional) Si quieres mostrar solo los 3 o 6 más recientes en la home
+const featuredPosts = sortedPosts.slice(0, 6);
+---
+
+<Layout title="Inicio | Mi Blog Personal">
+  
+  <section class="py-12 md:py-20 border-b dark:border-gray-800 mb-12">
+    <div class="max-w-3xl">
+      <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
+        Explora ideas sobre <span class="text-blue-600 dark:text-blue-400">tecnología</span> y diseño.
+      </h1>
+      <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+        Bienvenido a mi rincón digital. Aquí comparto tutoriales, reflexiones y guías sobre desarrollo web moderno con Astro y Tailwind CSS.
+      </p>
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-sm font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-6">
+      Categorías populares
+    </h2>
+    <div class="flex flex-wrap gap-3">
+      <a 
+        href="/blog" 
+        class="px-5 py-2 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-sm font-medium"
+      >
+        Todos
+      </a>
+      {categories.map(category => (
+        <a 
+          href={`/category/${category.toLowerCase()}`} 
+          class="px-5 py-2 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-500 transition-all text-sm font-medium capitalize shadow-sm"
+        >
+          {category}
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <div class="flex justify-between items-end mb-8">
+      <h2 class="text-3xl font-bold dark:text-white">Últimos artículos</h2>
+      <a href="/blog" class="text-blue-600 dark:text-blue-400 hover:underline font-medium text-sm">
+        Ver todos los posts →
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {featuredPosts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-24 p-8 md:p-12 rounded-3xl bg-gray-900 dark:bg-blue-900/10 text-center border border-white/10">
+    <h2 class="text-3xl font-bold text-white mb-4">¿Te gusta lo que lees?</h2>
+    <p class="text-gray-400 mb-8 max-w-md mx-auto">
+      No te pierdas ninguna actualización. Pronto añadiré un boletín para enviarte lo mejor del blog.
+    </p>
+    <button class="px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-blue-500 hover:text-white transition-all">
+      Próximamente
+    </button>
+  </section>
+
+</Layout>

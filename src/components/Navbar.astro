@@ -1,0 +1,16 @@
+---
+import ThemeIcon from './ThemeIcon.astro';
+---
+<nav class="flex justify-between items-center py-4 px-6 border-b dark:border-gray-700 bg-white dark:bg-gray-900 transition-colors duration-300">
+  <div class="logo font-bold text-xl dark:text-white"><a href="/">MiBlog</a></li></div>
+  
+  <div class="flex items-center gap-6">
+    <ul class="flex gap-4 dark:text-gray-300">
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/about">Acerca de</a></li>
+    </ul>
+    
+    <ThemeIcon />
+  </div>
+</nav>

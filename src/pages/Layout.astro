@@ -1,0 +1,44 @@
+---
+import '../styles/global.css';
+
+// Importamos la Navbar que creamos antes
+import Navbar from '../components/Navbar.astro';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>{title}</title>
+		
+		<script is:inline>
+			const theme = (() => {
+				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+					return localStorage.getItem('theme');
+				}
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					return 'dark';
+				}
+				return 'light';
+			})();
+		
+			if (theme === 'light') {
+				document.documentElement.classList.remove('dark');
+			} else {
+				document.documentElement.classList.add('dark');
+			}
+		</script>
+	</head>
+	<body class="bg-white text-black dark:bg-gray-900 dark:text-white transition-colors duration-300">
+		<Navbar />
+		<main class="max-w-4xl mx-auto p-6">
+			<slot /> </main>
+	</body>
+</html>
