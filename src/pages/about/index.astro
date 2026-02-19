@@ -5,9 +5,8 @@ import About from '../../components/about.astro';
 
 const allProjects = await getCollection('projects');
 ---
-<Layout title="Portafolio">
-  <About /> </Layout>
 <Layout title="Mi Portafolio">
+  <About />
   <section class="py-12">
     <h1 class="text-4xl font-bold mb-4 dark:text-white">Proyectos Seleccionados</h1>
     <p class="text-gray-600 dark:text-gray-400 mb-12 max-w-2xl">
